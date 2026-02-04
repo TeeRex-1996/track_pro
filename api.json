@@ -1,0 +1,29 @@
+{
+  "users": [
+    {
+      "id": "c203",
+      "fullname": "dssdf",
+      "email": "aishwaryatbrc02@outlook.com",
+      "password": "123",
+      "confirm_password": "123",
+      "role": "defsd",
+      "phone": "07876876876"
+    },
+    {
+      "id": "308d",
+      "fullname": "adasadas",
+      "email": "aishwaryatbrc02@outlook.com",
+      "password": "123",
+      "role": "defsd",
+      "phone": "07876876876"
+    },
+    {
+      "id": "f447",
+      "fullname": "qweqwe",
+      "email": "aishwaryatbrc02@outlook.com",
+      "password": "123",
+      "role": "wqeqe",
+      "phone": "07876876876"
+    }
+  ]
+}
