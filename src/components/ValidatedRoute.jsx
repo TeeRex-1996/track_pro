@@ -1,14 +1,12 @@
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import Login from "../pages/Login";
-import Navbar from "./Navbar";
+// import Navbar from "./Navbar";
 const ValidatedRoute = () => {
   const token = localStorage.getItem("token");
-  if (!token) return <Login></Login>;
+  if (!token) return <Navigate to="/login" replace></Navigate>;
   return (
     <div>
-      <header>
-        <Navbar></Navbar>
-      </header>
+      <header>{/* <Navbar token={token}></Navbar> */}</header>
       <main>
         <Outlet></Outlet>
       </main>

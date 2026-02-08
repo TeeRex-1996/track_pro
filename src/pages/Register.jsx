@@ -1,9 +1,9 @@
 import React from "react";
 import { Formik, ErrorMessage, Field, Form } from "formik";
 import Swal from "sweetalert2";
+import { useEffect } from "react";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 const url = "http://localhost:3000/users";
 const Register = () => {
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ const Register = () => {
           icon: "success",
         });
         resetForm();
-        navigate("/login");
+        navigate("/login", { replace: true });
       } else {
         Swal.fire({
           title: "Error!",
@@ -59,6 +59,13 @@ const Register = () => {
       });
     }
   };
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/home", { replace: true });
+    }
+  }, []);
+
   return (
     <React.Fragment>
       <div className="mb-4 min-h-screen flex justify-center bg-gray-100">
