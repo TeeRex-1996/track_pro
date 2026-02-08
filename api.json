@@ -8,5 +8,39 @@
       "role": "manager",
       "phone": "9898982933"
     }
+  ],
+  "tiles": [
+    {
+      "id": 1,
+      "title": "Add Employees",
+      "desc": "Add new employees to system easily",
+      "img": "/add_emp.png",
+      "link": "/add-employee",
+      "roles": ["manager", "admin"]
+    },
+    {
+      "id": 2,
+      "title": "View Employees",
+      "desc": "See list of employees with their details",
+      "img": "/view.jpg",
+      "link": "/view-employees",
+      "roles": ["employee", "manager", "admin"]
+    },
+    {
+      "id": 3,
+      "title": "Manage Employees",
+      "desc": "Edit or Remove employee information as needed",
+      "img": "/manage_emp.jpg",
+      "link": "/manage-employees",
+      "roles": ["manager", "admin"]
+    },
+    {
+      "id": 4,
+      "title": "Future functionality",
+      "desc": "...",
+      "img": "/add_emp.png",
+      "link": "#",
+      "roles": []
+    }
   ]
 }
