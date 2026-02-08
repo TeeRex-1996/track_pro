@@ -11,6 +11,7 @@ const Login = () => {
       .required("Email is Required"),
     password: Yup.string().required("Password is required"),
   });
+  //NOTE: Using GET request here because JSON Server treats POST on /users as a create operation (adds new data to db.json).
   const login = async (values, { resetForm }) => {
     try {
       const response = await api.get(
@@ -54,7 +55,7 @@ const Login = () => {
       <div className="w-full max-w-md mt-6">
         <h2 className="text-2xl font-bold text-center mb-4">Login Page</h2>
         <Formik
-          schema={schema}
+          validationSchema={schema}
           initialValues={{ email: "", password: "" }}
           onSubmit={login}
         >
@@ -68,7 +69,7 @@ const Login = () => {
                 className="border p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition rounded"
               ></Field>
               <ErrorMessage
-                className="bg-red-300"
+                className="text-red-700"
                 component="div"
                 name="email"
               ></ErrorMessage>
@@ -83,7 +84,7 @@ const Login = () => {
                 className="border p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition rounded"
               ></Field>
               <ErrorMessage
-                className="bg-red-300"
+                className="text-red-700"
                 component="div"
                 name="password"
               ></ErrorMessage>

@@ -1,12 +1,12 @@
 {
   "users": [
     {
-      "id": "98c1",
-      "fullname": "test",
+      "id": "a035",
+      "fullname": "Shubham",
       "email": "test@gmail.com",
       "password": "123",
-      "role": "defsd",
-      "phone": "8989898979"
+      "role": "manager",
+      "phone": "9898982933"
     }
   ]
 }

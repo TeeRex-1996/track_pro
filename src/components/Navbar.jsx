@@ -1,5 +1,12 @@
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const Navbar = () => {
+  const naviate = useNavigate();
+  const logout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    naviate("/login");
+  };
   return (
     <nav className="bg-gray-900  text-white px-6 py-3 flex justify-between">
       <h1 className="text-xl font-bold">
@@ -12,12 +19,12 @@ const Navbar = () => {
         <NavLink to="/" className="hover:text-blue-400">
           Home
         </NavLink>
-        <NavLink to="/home" className="hover:text-blue-400">
-          About
-        </NavLink>
         <NavLink to="/login" className="hover:text-blue-400">
           Login
         </NavLink>
+        <button onClick={logout} className="hover:text-blue-400">
+          Logout
+        </button>
       </div>
     </nav>
   );
