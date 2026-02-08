@@ -4,11 +4,11 @@ import Swal from "sweetalert2";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+const url = "http://localhost:3000/users";
 const Register = () => {
   const navigate = useNavigate();
-  const url = "http://localhost:3000/users";
   const schema = Yup.object({
-    fullname: Yup.string().required("Name Is Required"),
+    fullname: Yup.string().required("Name is Required"),
     email: Yup.string()
       .email("Email should be in correct format")
       .required("Email is Required"),
@@ -17,15 +17,16 @@ const Register = () => {
       .oneOf([Yup.ref("password"), null], "Pasword should match")
       .required("Please confirm password"),
     role: Yup.string().required("Role is required"),
-    phone: Yup.string().required("Phone Number is Required"),
+    phone: Yup.string()
+      .matches(/^[0-9]{10}$/, "Phone must be 10 digits")
+      .required("Phone Number is Required"),
   });
 
   const handlSubmit = async (values, { resetForm }) => {
     try {
       const { confirm_password, ...userData } = values;
-      const existingResponse = await axios.get(
-        `${url}?email=${userData.email}`,
-      );
+      //NOTE: Using GET request here because JSON Server treats POST on /users as a create operation (adds new data to db.json).
+      const existingResponse = await api.get(`${url}?email=${userData.email}`);
       if (existingResponse.data.length > 0) {
         Swal.fire({
           title: "Error!",
@@ -34,7 +35,7 @@ const Register = () => {
         });
         return;
       }
-      const response = await axios.post(url, userData);
+      const response = await api.post(url, userData);
       if (response.data) {
         Swal.fire({
           title: "Registered!",
@@ -86,7 +87,7 @@ const Register = () => {
                   className="border p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition rounded"
                 ></Field>
                 <ErrorMessage
-                  className="bg-red-300 error"
+                  className="text-red-700 error"
                   component="div"
                   name="fullname"
                 ></ErrorMessage>
@@ -101,7 +102,7 @@ const Register = () => {
                   className="border p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition rounded"
                 ></Field>
                 <ErrorMessage
-                  className="bg-red-300 error"
+                  className="text-red-700 error"
                   component="div"
                   name="email"
                 ></ErrorMessage>
@@ -116,7 +117,7 @@ const Register = () => {
                   className="border p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition rounded"
                 ></Field>
                 <ErrorMessage
-                  className="bg-red-300 text-sm mt-1 error"
+                  className="text-red-700 text-sm mt-1 error"
                   component="div"
                   name="password"
                 ></ErrorMessage>
@@ -134,7 +135,7 @@ const Register = () => {
                   className="border p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition rounded"
                 ></Field>
                 <ErrorMessage
-                  className="bg-red-300 text-sm mt-1 error"
+                  className="text-red-700 text-sm mt-1 error"
                   component="div"
                   name="confirm_password"
                 ></ErrorMessage>
@@ -144,12 +145,16 @@ const Register = () => {
                   Role :
                 </label>
                 <Field
-                  type="text"
+                  as="select"
                   name="role"
                   className="border p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition rounded"
-                ></Field>
+                >
+                  <option value="">Select Role</option>
+                  <option value="employee">Employee</option>
+                  <option value="manager">Manager</option>
+                </Field>
                 <ErrorMessage
-                  className="bg-red-300 text-sm mt-1 error"
+                  className="text-red-700 text-sm mt-1 error"
                   component="div"
                   name="role"
                 ></ErrorMessage>
@@ -164,13 +169,13 @@ const Register = () => {
                   className="border p-2 w-full focus:ring-2 focus:bg-blue-100 rounded"
                 ></Field>
                 <ErrorMessage
-                  className="bg-red-300 text-sm mt-1 error"
+                  className="text-red-700 text-sm mt-1 error"
                   component="div"
                   name="phone"
                 ></ErrorMessage>
               </div>
               <button
-                className="bg-blue-400 rounded border border-black-400 px-1 py-2 mt-3"
+                className="text-blue-700 rounded border border-black-400 px-1 py-2 mt-3"
                 type="submit"
               >
                 Register
