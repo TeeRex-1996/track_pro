@@ -19,7 +19,7 @@ const Home = () => {
           </h1>
         </div>
         <div className="p-8">
-          <img src="./corp.png" alt="corp" className="w-auto h-70 ml-20"></img>
+          <img src="./corp.png" alt="corp" className="w-auto h-72 ml-20"></img>
         </div>
       </div>
       <div className="border border-gray-100"></div>

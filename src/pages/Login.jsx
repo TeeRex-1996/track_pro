@@ -3,8 +3,10 @@ import { Formik, ErrorMessage, Field, Form } from "formik";
 import { api } from "../components/services/api";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import { LoginContext } from "../context/AuthContext";
 const Login = () => {
+  const { login: loginUser, isAuthenticated } = useContext(LoginContext);
   const navigate = useNavigate();
   const schema = Yup.object({
     email: Yup.string()
@@ -27,9 +29,7 @@ const Login = () => {
             role: user.role,
           }),
         );
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
-        localStorage.setItem("expiry", Date.now() + 10 * 60 * 1000);
+        loginUser(user, token);
         navigate("/home", { replace: true });
         resetForm();
         Swal.fire({
@@ -53,9 +53,8 @@ const Login = () => {
     }
   };
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) navigate("/home", { replace: true });
-  }, []);
+    if (isAuthenticated) navigate("/home", { replace: true });
+  }, [isAuthenticated]);
   return (
     <div className="mb-4 min-h-screen flex justify-center bg-gray-100">
       <div className="w-full max-w-md mt-6">
