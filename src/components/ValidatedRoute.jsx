@@ -1,18 +1,14 @@
 import { Navigate, Outlet } from "react-router-dom";
 import Login from "../pages/Login";
+import { useContext } from "react";
+import { LoginContext } from "../context/AuthContext";
 // import Navbar from "./Navbar";
 const ValidatedRoute = () => {
-  const token = localStorage.getItem("token");
-  if (!token) return <Navigate to="/login" replace></Navigate>;
-  return (
-    <div>
-      <header>{/* <Navbar token={token}></Navbar> */}</header>
-      <main>
-        <Outlet></Outlet>
-      </main>
-      <footer></footer>
-    </div>
+  const { isAuthenticated } = useContext(LoginContext);
+  return !isAuthenticated ? (
+    <Navigate to="/login" replace></Navigate>
+  ) : (
+    <Outlet></Outlet>
   );
 };
-
 export default ValidatedRoute;
