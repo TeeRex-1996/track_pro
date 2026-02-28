@@ -1,11 +1,12 @@
 import * as Yup from "yup";
-import { Formik, ErrorMessage, Field, Form } from "formik";
+import { Formik, FormikHelpers, ErrorMessage, Field, Form } from "formik";
 import { api } from "../components/services/api";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { LoginContext } from "../context/AuthContext";
-import emailjs from "@emailjs/browser";
+import { LoginFormValues, User } from "../types/auth";
+// import emailjs from "@emailjs/browser";
 const Login = () => {
   const { login: loginUser, isAuthenticated } = useContext(LoginContext);
   const navigate = useNavigate();
@@ -15,10 +16,11 @@ const Login = () => {
       .required("Email is Required"),
     password: Yup.string().required("Password is required"),
   });
-  //NOTE: Using GET request here because JSON Server treats POST on /users as a create operation (adds new data to db.json).
-  const login = async (values, { resetForm }) => {
+  // NOTE: Using GET request here because JSON Server treats POST on /users
+  //  as a create operation (adds new data to db.json).
+  const login = async (values: LoginFormValues, { resetForm }: FormikHelpers<LoginFormValues>) => {
     try {
-      const response = await api.get(
+      const response = await api.get<User[]>(
         `/users?email=${values.email}&password=${values.password}`,
       );
       if (response.data.length > 0) {
@@ -45,7 +47,7 @@ const Login = () => {
           icon: "error",
         });
       }
-    } catch (e) {
+    } catch (e: unknown) {
       Swal.fire({
         title: "Error!",
         text: "Server Error!",
@@ -54,15 +56,15 @@ const Login = () => {
     }
   };
   useEffect(() => {
-    if (isAuthenticated){
-    navigate("/home", { replace: true }); 
-    } 
+    if (isAuthenticated) {
+      navigate("/home", { replace: true });
+    }
   }, [isAuthenticated]);
   return (
     <div className="mb-4 min-h-screen flex justify-center bg-gray-100">
       <div className="w-full max-w-md mt-6">
         <h2 className="text-2xl font-bold text-center mb-4">Login Page</h2>
-        <Formik
+        <Formik<LoginFormValues>
           validationSchema={schema}
           initialValues={{ email: "", password: "" }}
           onSubmit={login}

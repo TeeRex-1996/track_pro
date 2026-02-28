@@ -1,10 +1,12 @@
 import React from "react";
-import { Formik, ErrorMessage, Field, Form } from "formik";
+import { Formik, FormikHelpers, ErrorMessage, Field, Form } from "formik";
 import Swal from "sweetalert2";
 import { api } from "../components/services/api";
 import { useEffect } from "react";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import { User } from "../types/auth";
+import { AUTH_KEYS } from "../types/constants";
 // import { emailJs } from "../components/services/api";
 
 const Register = () => {
@@ -16,7 +18,7 @@ const Register = () => {
       .required("Email is Required"),
     password: Yup.string().required("Password is Required"),
     confirm_password: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Pasword should match")
+      .oneOf([Yup.ref("password"), undefined], "Pasword should match")
       .required("Please confirm password"),
     role: Yup.string().required("Role is required"),
     phone: Yup.string()
@@ -24,11 +26,11 @@ const Register = () => {
       .required("Phone Number is Required"),
   });
 
-  const handlSubmit = async (values, { resetForm }) => {
+  const handlSubmit = async (values: User, { resetForm }: FormikHelpers<User>) => {
     try {
       const { confirm_password, ...userData } = values;
       //NOTE: Using GET request here because JSON Server treats POST on /users as a create operation (adds new data to db.json).
-      const existingResponse = await api.get(`/users?email=${userData.email}`);
+      const existingResponse = await api.get<User[]>(`/users?email=${userData.email}`);
       if (existingResponse.data.length > 0) {
         Swal.fire({
           title: "Error!",
@@ -44,7 +46,7 @@ const Register = () => {
           text: "User Registerd Successfully!",
           icon: "success",
         });
-      //  emailJs({email: response.data.email, name: response.data.fullname});
+        //  emailJs({email: response.data.email, name: response.data.fullname});
         resetForm();
         navigate("/login", { replace: true });
       } else {
@@ -54,7 +56,7 @@ const Register = () => {
           icon: "error",
         });
       }
-    } catch (e) {
+    } catch (e: unknown) {
       Swal.fire({
         title: "Error!",
         text: "Server Error!",
@@ -63,7 +65,7 @@ const Register = () => {
     }
   };
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem(AUTH_KEYS.TOKEN);
     if (token) {
       navigate("/home", { replace: true });
     }
@@ -74,9 +76,10 @@ const Register = () => {
       <div className="mb-4 min-h-screen flex justify-center bg-gray-100">
         <div className="w-full max-w-md mt-6">
           <h2 className="text-2xl font-bold text-center mb-4">Register Page</h2>
-          <Formik
+          <Formik<User>
             validationSchema={schema}
             initialValues={{
+              id: "",
               fullname: "",
               email: "",
               password: "",
