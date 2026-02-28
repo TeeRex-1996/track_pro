@@ -1,5 +1,5 @@
 export const intaialState = {
-  user: "",
+  user: null,
   isAuthenticated: false,
 };
 

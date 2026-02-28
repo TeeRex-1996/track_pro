@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { LoginContext } from "../context/AuthContext";
+import emailjs from "@emailjs/browser";
 const Login = () => {
   const { login: loginUser, isAuthenticated } = useContext(LoginContext);
   const navigate = useNavigate();
@@ -53,7 +54,9 @@ const Login = () => {
     }
   };
   useEffect(() => {
-    if (isAuthenticated) navigate("/home", { replace: true });
+    if (isAuthenticated){
+    navigate("/home", { replace: true }); 
+    } 
   }, [isAuthenticated]);
   return (
     <div className="mb-4 min-h-screen flex justify-center bg-gray-100">

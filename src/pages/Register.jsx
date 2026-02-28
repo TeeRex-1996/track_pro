@@ -1,10 +1,12 @@
 import React from "react";
 import { Formik, ErrorMessage, Field, Form } from "formik";
 import Swal from "sweetalert2";
+import { api } from "../components/services/api";
 import { useEffect } from "react";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-const url = "http://localhost:3000/users";
+// import { emailJs } from "../components/services/api";
+
 const Register = () => {
   const navigate = useNavigate();
   const schema = Yup.object({
@@ -26,7 +28,7 @@ const Register = () => {
     try {
       const { confirm_password, ...userData } = values;
       //NOTE: Using GET request here because JSON Server treats POST on /users as a create operation (adds new data to db.json).
-      const existingResponse = await api.get(`${url}?email=${userData.email}`);
+      const existingResponse = await api.get(`/users?email=${userData.email}`);
       if (existingResponse.data.length > 0) {
         Swal.fire({
           title: "Error!",
@@ -35,13 +37,14 @@ const Register = () => {
         });
         return;
       }
-      const response = await api.post(url, userData);
+      const response = await api.post(`/users`, userData);
       if (response.data) {
         Swal.fire({
           title: "Registered!",
           text: "User Registerd Successfully!",
           icon: "success",
         });
+      //  emailJs({email: response.data.email, name: response.data.fullname});
         resetForm();
         navigate("/login", { replace: true });
       } else {
