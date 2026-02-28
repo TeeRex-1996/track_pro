@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../components/services/api";
 import Tiles from "../components/Tiles";
-const Home = () => {
-  const [tiles, setTiles] = useState([]);
-  const token = JSON.parse(localStorage.getItem("user"));
+import { AUTH_KEYS } from "../types/constants";
+interface Tile {
+  id: string;
+  title: string;
+  desc: string;
+  img: string;
+  link:string;
+  roles: string[];
+}
+
+const Home:React.FC = () => {
+  const [tiles, setTiles] = useState<Tile[]>([]);
+  const token = JSON.parse(localStorage.getItem(AUTH_KEYS.USER)  || "");
   useEffect(() => {
-    api.get(`/tiles`).then((res) => setTiles(res.data));
+    api.get<Tile[]>(`/tiles`).then((res) => setTiles(res.data));
   }, []);
   return (
     <React.Fragment>

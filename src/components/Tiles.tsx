@@ -1,5 +1,16 @@
+import React from "react";
 import { NavLink } from "react-router-dom";
-const Tiles = ({tileData}) => {
+
+interface TileData {
+  title: string;
+  desc: string;
+  img: string;
+  link: string;
+}
+interface TilesProps {
+  tileData: TileData[];
+}
+const Tiles : React.FC<TilesProps> = ({tileData}) => {
   return (
        <div className="flex gap-20">
         {
